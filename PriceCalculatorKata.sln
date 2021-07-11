@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31410.357
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MockPriceCalculatorKata", "MockPriceCalculatorKata.csproj", "{72CB4FBD-C50B-43BE-AA62-22E5B8B824AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriceCalculatorKata", "PriceCalculatorKata.csproj", "{822F9626-DC69-41DE-AEBF-86499DF63B0B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{72CB4FBD-C50B-43BE-AA62-22E5B8B824AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72CB4FBD-C50B-43BE-AA62-22E5B8B824AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72CB4FBD-C50B-43BE-AA62-22E5B8B824AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72CB4FBD-C50B-43BE-AA62-22E5B8B824AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{822F9626-DC69-41DE-AEBF-86499DF63B0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{822F9626-DC69-41DE-AEBF-86499DF63B0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{822F9626-DC69-41DE-AEBF-86499DF63B0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{822F9626-DC69-41DE-AEBF-86499DF63B0B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {243FA91A-A967-4BB9-B583-F21C8F38AB25}
+	EndGlobalSection
+EndGlobal
