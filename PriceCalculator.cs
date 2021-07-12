@@ -9,23 +9,40 @@ namespace PriceCalculatorKata
     {
         private double _taxAmount;
         private Product _purchasedProduct;
+        private double _finalPrice;
+        private double _discountAmount;
 
         public PriceCalculator()
         {
 
         }
 
-        public PriceCalculator(double tax, Product product)
+        public PriceCalculator(double tax,double discount, Product product)
         {
             this._purchasedProduct = product;
             this._taxAmount = tax;
-
+            this._discountAmount = discount;
+            this._finalPrice = this._purchasedProduct.Price;
         }
 
-        public double TaxCalculator()
+        public void TaxCalculator()
         {
-               double priceAferTax= this._purchasedProduct.Price + (this._purchasedProduct.Price * this._taxAmount);
-               return Math.Round(priceAferTax, 2);
+               this._finalPrice = this._finalPrice + (this._purchasedProduct.Price * this._taxAmount);
+               this._finalPrice= Math.Round(this._finalPrice, 2);
+        }
+
+        public void DiscountCalculator()
+
+        {
+            this._finalPrice = this._finalPrice - (this._purchasedProduct.Price * this._discountAmount);
+            this._finalPrice=Math.Round(this._finalPrice, 2);
+        }
+
+        public double FinalPrice()
+        {
+            TaxCalculator();
+            DiscountCalculator();
+            return this._finalPrice;
         }
     }
 }
