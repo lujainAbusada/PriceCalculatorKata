@@ -11,9 +11,9 @@ namespace PriceCalculatorKata
             Double tax = Double.Parse(Console.ReadLine());
             Console.WriteLine("Please Enter Discount amount:");
             Double discount = Double.Parse(Console.ReadLine());
-            PriceCalculator price = new PriceCalculator(tax,discount,Book);
-            Console.WriteLine($"The original price is {Book.Price}");
-            Console.WriteLine($"The price after tax is {price.FinalPrice()}");
+            var PriceCalculator = new PriceCalculator(tax,discount,Book);
+            PriceCalculator.CalculateFinalPrice();
+            new PurchaseReport(PriceCalculator).PrintReport();
         }
     }
 }

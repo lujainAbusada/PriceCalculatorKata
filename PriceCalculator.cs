@@ -7,10 +7,11 @@ namespace PriceCalculatorKata
     
     class PriceCalculator
     {
-        private double _taxAmount;
-        private Product _purchasedProduct;
-        private double _finalPrice;
-        private double _discountAmount;
+        public double TaxAmount;
+        public Product PurchasedProduct;
+        public double FinalPrice;
+        public double DiscountAmount;
+        public double DeducedPriceAmount;
 
         public PriceCalculator()
         {
@@ -19,30 +20,30 @@ namespace PriceCalculatorKata
 
         public PriceCalculator(double tax,double discount, Product product)
         {
-            this._purchasedProduct = product;
-            this._taxAmount = tax;
-            this._discountAmount = discount;
-            this._finalPrice = this._purchasedProduct.Price;
+            this.PurchasedProduct = product;
+            this.TaxAmount = tax;
+            this.DiscountAmount = discount;
+            this.FinalPrice = this.PurchasedProduct.Price;
         }
 
         public void TaxCalculator()
         {
-               this._finalPrice = this._finalPrice + (this._purchasedProduct.Price * this._taxAmount);
-               this._finalPrice= Math.Round(this._finalPrice, 2);
+               this.FinalPrice = this.FinalPrice + (this.PurchasedProduct.Price * this.TaxAmount);
+               this.FinalPrice= Math.Round(this.FinalPrice, 2);
         }
 
         public void DiscountCalculator()
 
         {
-            this._finalPrice = this._finalPrice - (this._purchasedProduct.Price * this._discountAmount);
-            this._finalPrice=Math.Round(this._finalPrice, 2);
+            DeducedPriceAmount = Math.Round(this.PurchasedProduct.Price * this.DiscountAmount,2);
+            this.FinalPrice = Math.Round(this.FinalPrice - this.DeducedPriceAmount,2);
+            this.FinalPrice=Math.Round(this.FinalPrice, 2);
         }
 
-        public double FinalPrice()
+        public void CalculateFinalPrice()
         {
             TaxCalculator();
             DiscountCalculator();
-            return this._finalPrice;
         }
     }
 }
