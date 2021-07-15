@@ -17,18 +17,20 @@ namespace PriceCalculatorKata
             Double upcdiscount = Double.Parse(Console.ReadLine());
             Console.WriteLine("Is Universal Discount applied before tax?");
             bool upcBeforeTax = Boolean.Parse(Console.ReadLine());
+            Console.WriteLine("Please Enter Discount cap:");
+            string cap = Console.ReadLine();
             Console.WriteLine("Please Enter Transport cost:");
             String Transport = Console.ReadLine();
             Console.WriteLine("Please Enter Packaging Cost:");
             string packaging = Console.ReadLine();
             Console.WriteLine("Please Enter administartive expenses Cost:");
             string administrative = Console.ReadLine();
-            var PriceCalculator = new PriceCalculator(tax, new Discount(Universaldiscount, universalBeforeTax, upcdiscount, upcBeforeTax), Book, new Expenses(Transport, packaging, administrative));
+            var PriceCalculator = new PriceCalculator(tax, new Discount(Universaldiscount, universalBeforeTax, upcdiscount, upcBeforeTax,cap), Book, new Expenses(Transport, packaging, administrative));
             Console.WriteLine("Is discount Additive or Multiplative?");
             if (Console.ReadLine().ToLower() == "additive")
                 PriceCalculator.CalculateAdditiveFinalPrice();
             else
-                PriceCalculator.CalculateMultiplativeFinalPrice();
+                PriceCalculator.CalculateMultiplicativeFinalPrice();
             new PurchaseReport(PriceCalculator).PrintReport();
         }
     }

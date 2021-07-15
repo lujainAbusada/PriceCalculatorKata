@@ -74,6 +74,13 @@ namespace PriceCalculatorKata
             else
                 return  _purchasedProduct.Price * _expenses.AdministrativeRate;
         }
+        public double CalculateCap()
+        {
+            if (_discount.CalculateCap() == _discount.CapValue)
+                return _discount.CapValue;
+            else
+                return _purchasedProduct.Price * _discount.CapRate;
+        }
 
         public double CalculateAdditiveFinalPrice()
         {
@@ -83,17 +90,23 @@ namespace PriceCalculatorKata
             if (_discount.UniversalDiscountbeforeTax == true)
                 _deducedPriceFromUniversalDiscount = CalculateUniversalDiscount(_purchasedProduct.Price);
 
-            Double temp = _purchasedProduct.Price - _deducedPriceFromUniversalDiscount - __deducedPriceFromUPCDiscount;
+            double deducedPriceAmountBeforeTax = Math.Round((__deducedPriceFromUPCDiscount + _deducedPriceFromUniversalDiscount), 2);
+            double cap = CalculateCap();
+            if (deducedPriceAmountBeforeTax > cap)
+                deducedPriceAmountBeforeTax = cap;
+
             FinalPrice += CalculateTax(_purchasedProduct.Price - _deducedPriceFromUniversalDiscount - __deducedPriceFromUPCDiscount);
 
             if (_discount.UpcDiscountbeforeTax == false)
-                __deducedPriceFromUPCDiscount = CalculateUpcDiscount(temp);
+                __deducedPriceFromUPCDiscount = CalculateUpcDiscount(_purchasedProduct.Price - deducedPriceAmountBeforeTax);
 
             if (_discount.UniversalDiscountbeforeTax == false)
-                _deducedPriceFromUniversalDiscount = CalculateUniversalDiscount(temp);
+                _deducedPriceFromUniversalDiscount = CalculateUniversalDiscount(_purchasedProduct.Price - deducedPriceAmountBeforeTax);
 
             FinalPrice += CalculatePackagingExpenses() + CalculateTransportExpenses() + CalculateAdministrativeExpenses();
             deducedPriceAmount = Math.Round((__deducedPriceFromUPCDiscount + _deducedPriceFromUniversalDiscount), 2);
+            if (deducedPriceAmount > cap)
+                deducedPriceAmount = cap;
             FinalPrice -= deducedPriceAmount;
             FinalPrice = Math.Round(FinalPrice, 2);
             return FinalPrice;
@@ -107,8 +120,12 @@ namespace PriceCalculatorKata
             if (_discount.UniversalDiscountbeforeTax == true)
                 _deducedPriceFromUniversalDiscount = CalculateUniversalDiscount(_purchasedProduct.Price - __deducedPriceFromUPCDiscount);
 
+            double deducedPriceAmountBeforeTax = Math.Round((__deducedPriceFromUPCDiscount + _deducedPriceFromUniversalDiscount), 2);
+            double cap = CalculateCap();
+            if (deducedPriceAmountBeforeTax > cap)
+                deducedPriceAmountBeforeTax = cap;
 
-            FinalPrice += CalculateTax(_purchasedProduct.Price - _deducedPriceFromUniversalDiscount - __deducedPriceFromUPCDiscount);
+            FinalPrice += CalculateTax(deducedPriceAmountBeforeTax);
 
             if (_discount.UpcDiscountbeforeTax == false)
                 __deducedPriceFromUPCDiscount = CalculateUpcDiscount(_purchasedProduct.Price - _deducedPriceFromUniversalDiscount);
@@ -119,6 +136,10 @@ namespace PriceCalculatorKata
 
             FinalPrice += CalculatePackagingExpenses() + CalculateTransportExpenses() + CalculateAdministrativeExpenses();
             deducedPriceAmount = Math.Round((__deducedPriceFromUPCDiscount + _deducedPriceFromUniversalDiscount), 2);
+
+            if (deducedPriceAmount > cap)
+                deducedPriceAmount = cap;
+
             FinalPrice -= deducedPriceAmount;
             FinalPrice = Math.Round(FinalPrice, 2);
             return FinalPrice;
