@@ -7,13 +7,11 @@ namespace PriceCalculatorKata
     class Product
     {
 
-        private string name;
-        private int upc;
+        private string _name;
+        private int _upc;
         private double price;
         private double upcDiscount;
 
-        public string Name { get => name; set => name = value; }
-        public int Upc { get => upc; set => upc = value; }
         public double Price { get => price; set => price = value; }
         public double UpcDiscount { get => upcDiscount; set => upcDiscount = value; }
 
@@ -22,8 +20,8 @@ namespace PriceCalculatorKata
 
         public Product(string name, int UPC, double price, double UpcDiscount)
         {
-            this.name = name;
-            this.upc = UPC;
+            this._name = name;
+            this._upc = UPC;
             this.price = price;
             this.upcDiscount = UpcDiscount;
 
