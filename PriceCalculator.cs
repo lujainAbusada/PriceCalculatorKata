@@ -7,20 +7,17 @@ namespace PriceCalculatorKata
 
     class PriceCalculator
     {
-        private double taxAmount;
-        private Product purchasedProduct;
-        private double finalPrice;
-        private Discount discount;
+        private double _taxAmount;
+        private Product _purchasedProduct;
+        private Discount _discount;
+        private Expenses _expenses;
+        private double __deducedPriceFromUPCDiscount = 0;
+        private double _deducedPriceFromUniversalDiscount = 0;
         private double deducedPriceAmount = 0;
-        private Expenses ExtraExpenses;
+        private double finalPrice;
 
-
-        public double TaxAmount { get => taxAmount; set => taxAmount = value; }
-        internal Product PurchasedProduct { get => purchasedProduct; set => purchasedProduct = value; }
         public double FinalPrice { get => finalPrice; set => finalPrice = value; }
         public double DeducedPriceAmount { get => deducedPriceAmount; set => deducedPriceAmount = value; }
-        internal Discount Amount { get => discount; set => discount = value; }
-        internal Expenses ProductExtraExpenses1 { get => ExtraExpenses; set => ExtraExpenses = value; }
 
         public PriceCalculator()
         {
@@ -30,77 +27,101 @@ namespace PriceCalculatorKata
 
         public PriceCalculator(double tax, Discount discount, Product product, Expenses expenses)
         {
-            purchasedProduct = product;
-            taxAmount = tax;
-            this.discount = discount;
-            finalPrice = this.purchasedProduct.Price;
-            ExtraExpenses = expenses;
+            _purchasedProduct = product;
+            _taxAmount = tax;
+            this._discount = discount;
+            FinalPrice = this._purchasedProduct.Price;
+            _expenses = expenses;
+
         }
 
-        public double AddTax()
+        public double CalculateTax(double price)
         {
-            return Math.Round((finalPrice + (finalPrice * taxAmount)), 2);
+            return FinalPrice * _taxAmount;
         }
 
-        public double AddUniversalDiscount(double price)
+        public double CalculateUniversalDiscount(double price)
 
         {
-            double discountedPrice = Math.Round(price * discount.UniversalAmount, 2);
-            deducedPriceAmount += discountedPrice;
-            return Math.Round(finalPrice - discountedPrice, 2);
+            return price * _discount.UniversalAmount;
         }
 
-        public double AddUpcDiscount(double price)
+        public double CalculateUpcDiscount(double price)
         {
-            double discountedPrice = Math.Round(price * discount.UpcAmount, 2);
-            deducedPriceAmount += discountedPrice;
-            return Math.Round(finalPrice - discountedPrice, 2);
+            return price * _discount.UpcAmount;
         }
 
-        public double AddTransportExpenses()
+        public double CalculateTransportExpenses()
         {
-            if (ExtraExpenses.CalculateTransportCost() == ExtraExpenses.TransportCost)
-                return finalPrice += ExtraExpenses.TransportCost;
+            if (_expenses.CalculateTransportCost() == _expenses.TransportCost)
+                return  _expenses.TransportCost;
             else
-                return finalPrice += purchasedProduct.Price * ExtraExpenses.TransportRate;
+                return _purchasedProduct.Price * _expenses.TransportRate;
         }
 
-        public double AddPackagingExpenses()
+        public double CalculatePackagingExpenses()
         {
-            if (ExtraExpenses.CalculatePackagingCost() == ExtraExpenses.PackagingCost)
-                return finalPrice += ExtraExpenses.PackagingCost;
+            if (_expenses.CalculatePackagingCost() == _expenses.PackagingCost)
+                return  _expenses.PackagingCost;
             else
-                return finalPrice += purchasedProduct.Price * ExtraExpenses.PackagingRate;
+                return  _purchasedProduct.Price * _expenses.PackagingRate;
         }
 
-        public double AddAdministrativeExpenses()
+        public double CalculateAdministrativeExpenses()
         {
-            if (ExtraExpenses.CalculateAdministrativeCost() == ExtraExpenses.AdministrativeCost)
-                return finalPrice += ExtraExpenses.AdministrativeCost;
+            if (_expenses.CalculateAdministrativeCost() == _expenses.AdministrativeCost)
+                return _expenses.AdministrativeCost;
             else
-                return finalPrice += purchasedProduct.Price * ExtraExpenses.AdministrativeRate;
+                return  _purchasedProduct.Price * _expenses.AdministrativeRate;
         }
 
-        public double CalculateFinalPrice()
+        public double CalculateAdditiveFinalPrice()
         {
-            if (discount.UpcDiscountbeforeTax == true)
-                finalPrice = AddUpcDiscount(PurchasedProduct.Price);
-            if (discount.UniversalDiscountbeforeTax == true)
-                finalPrice = AddUniversalDiscount(PurchasedProduct.Price);
+            if (_discount.UpcDiscountbeforeTax == true)
+                __deducedPriceFromUPCDiscount = CalculateUpcDiscount(_purchasedProduct.Price);
 
-            double temp = finalPrice;
-            finalPrice = AddTax();
+            if (_discount.UniversalDiscountbeforeTax == true)
+                _deducedPriceFromUniversalDiscount = CalculateUniversalDiscount(_purchasedProduct.Price);
 
-            if (discount.UniversalDiscountbeforeTax == false)
-                finalPrice = AddUniversalDiscount(temp);
+            Double temp = _purchasedProduct.Price - _deducedPriceFromUniversalDiscount - __deducedPriceFromUPCDiscount;
+            FinalPrice += CalculateTax(_purchasedProduct.Price - _deducedPriceFromUniversalDiscount - __deducedPriceFromUPCDiscount);
 
-            if (discount.UpcDiscountbeforeTax == false)
-                finalPrice = AddUpcDiscount(temp);
-            finalPrice = AddPackagingExpenses();
-            finalPrice = AddTransportExpenses();
-            finalPrice = AddAdministrativeExpenses();
-            finalPrice = Math.Round(finalPrice, 2);
-            return finalPrice;
+            if (_discount.UpcDiscountbeforeTax == false)
+                __deducedPriceFromUPCDiscount = CalculateUpcDiscount(temp);
+
+            if (_discount.UniversalDiscountbeforeTax == false)
+                _deducedPriceFromUniversalDiscount = CalculateUniversalDiscount(temp);
+
+            FinalPrice += CalculatePackagingExpenses() + CalculateTransportExpenses() + CalculateAdministrativeExpenses();
+            deducedPriceAmount = Math.Round((__deducedPriceFromUPCDiscount + _deducedPriceFromUniversalDiscount), 2);
+            FinalPrice -= deducedPriceAmount;
+            FinalPrice = Math.Round(FinalPrice, 2);
+            return FinalPrice;
+        }
+
+        public double CalculateMultiplicativeFinalPrice()
+        {
+            if (_discount.UpcDiscountbeforeTax == true)
+                __deducedPriceFromUPCDiscount = CalculateUpcDiscount(_purchasedProduct.Price);
+            
+            if (_discount.UniversalDiscountbeforeTax == true)
+                _deducedPriceFromUniversalDiscount = CalculateUniversalDiscount(_purchasedProduct.Price - __deducedPriceFromUPCDiscount);
+
+
+            FinalPrice += CalculateTax(_purchasedProduct.Price - _deducedPriceFromUniversalDiscount - __deducedPriceFromUPCDiscount);
+
+            if (_discount.UpcDiscountbeforeTax == false)
+                __deducedPriceFromUPCDiscount = CalculateUpcDiscount(_purchasedProduct.Price - _deducedPriceFromUniversalDiscount);
+
+            if (_discount.UniversalDiscountbeforeTax == false)
+                _deducedPriceFromUniversalDiscount = CalculateUniversalDiscount(_purchasedProduct.Price - __deducedPriceFromUPCDiscount);
+
+
+            FinalPrice += CalculatePackagingExpenses() + CalculateTransportExpenses() + CalculateAdministrativeExpenses();
+            deducedPriceAmount = Math.Round((__deducedPriceFromUPCDiscount + _deducedPriceFromUniversalDiscount), 2);
+            FinalPrice -= deducedPriceAmount;
+            FinalPrice = Math.Round(FinalPrice, 2);
+            return FinalPrice;
         }
     }
 }

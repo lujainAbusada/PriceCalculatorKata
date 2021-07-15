@@ -24,7 +24,11 @@ namespace PriceCalculatorKata
             Console.WriteLine("Please Enter administartive expenses Cost:");
             string administrative = Console.ReadLine();
             var PriceCalculator = new PriceCalculator(tax, new Discount(Universaldiscount, universalBeforeTax, upcdiscount, upcBeforeTax), Book, new Expenses(Transport, packaging, administrative));
-            PriceCalculator.CalculateFinalPrice();
+            Console.WriteLine("Is discount Additive or Multiplative?");
+            if (Console.ReadLine().ToLower() == "additive")
+                PriceCalculator.CalculateAdditiveFinalPrice();
+            else
+                PriceCalculator.CalculateMultiplativeFinalPrice();
             new PurchaseReport(PriceCalculator).PrintReport();
         }
     }
