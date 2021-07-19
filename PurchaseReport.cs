@@ -7,33 +7,26 @@ namespace PriceCalculatorKata
     class PurchaseReport
     {
         private PriceCalculator _priceCalculator;
-        private string _currency;
 
-        public PurchaseReport()
-        {
-
-        }
-        public PurchaseReport(PriceCalculator priceCalculator, string currency)
+        public PurchaseReport(PriceCalculator priceCalculator)
         {
             _priceCalculator = priceCalculator;
-            _currency = currency;
         }
 
         public void PrintReport()
         {
-            Console.WriteLine($"Cost = {_priceCalculator.PurchasedProduct.Price} {_currency}");
-            Console.WriteLine($"Tax = {Math.Round(_priceCalculator.TaxAmount,2)} {_currency}");
-            Console.WriteLine($"Total = {_priceCalculator.FinalPrice} {_currency}");
-            Console.WriteLine(DiscountStringFormatter() );
+            Console.WriteLine($"Cost = {_priceCalculator.PurchasedProduct.Price} {_priceCalculator.Currency.Name}");
+            Console.WriteLine($"Tax = {Math.Round(_priceCalculator.Tax.TaxAmount, 2)} {_priceCalculator.Currency.Name}");
+            Console.WriteLine($"Total = {Math.Round(_priceCalculator.FinalPrice, 2)} {_priceCalculator.Currency.Name}");
+            Console.WriteLine(DiscountStringFormatter());
         }
 
         public string DiscountStringFormatter()
         {
-
             if (this._priceCalculator.DeducedPriceAmount == 0)
                 return "";
             else
-                return $"{Math.Round(this._priceCalculator.DeducedPriceAmount,2)} {_currency} was deduced form the original price";
+                return $"{Math.Round(this._priceCalculator.DeducedPriceAmount, 2)} {_priceCalculator.Currency.Name} was deduced form the original price";
         }
     }
 }
