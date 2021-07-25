@@ -1,27 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PriceCalculatorKata
 {
     class Product
     {
-        internal string Name { get; set; }
-        internal int UPC { get; set; }
-        internal double Price { get; set; }
-        internal double UPCDiscount { get; set; }
+        private readonly string _name;
+        private readonly int _upc;
+        private readonly double _price;
+        private readonly double _upcDiscount;
 
+        public double Price { get => _price; }
+        public double UpcDiscount { get => _upcDiscount; }
+        public int Upc { get => _upc; }
+        public string Name { get => _name; }
 
-        public Product()
-        { }
-
-        public Product(string name, int UPC, double price, double UPCDiscount)
+        public Product(string name, int UPC, double price, double UpcDiscount)
         {
-            this.Name = name;
-            this.UPC = UPC;
-            this.Price = price;
-            this.UPCDiscount = UPCDiscount;
-
+            _name = name;
+            _upc = UPC;
+            _price = price;
+            _upcDiscount = UpcDiscount;
         }
     }
 }
