@@ -6,17 +6,17 @@ namespace PriceCalculatorKata
 {
     internal class Cap
     {
-        private string _capString;
+        private string _capValue;
         private const string _percentage = "%";
 
-        public Cap(string capString)
+        public Cap(string capValue)
         {
-            this._capString = capString;
+            _capValue = capValue;
         }
 
         public double CalculateCap(double price)
         {
-            return _capString.Contains(_percentage) ? price * Double.Parse(_capString.Replace(_percentage, "")) / 100 : Double.Parse(_capString);
+            return _capValue.Contains(_percentage) ? price * Double.Parse(_capValue.Replace(_percentage, "")) / 100 : Double.Parse(_capValue);
         }
     }
 }
