@@ -6,6 +6,7 @@ namespace PriceCalculatorKata
 {
     public enum DiscountType
     {
-        before, after
+        before = 1,
+        after = 2
     }
 }

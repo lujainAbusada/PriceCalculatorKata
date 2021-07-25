@@ -7,25 +7,27 @@ namespace PriceCalculatorKata
 {
     internal class MultiplicativeDiscountCalculator : IDiscountCalculator
     {
+        private readonly List<IDiscount> _allDiscounts;
         private readonly UpcDiscount _upc;
         private readonly UniversalDiscount _universal;
         private double _priceBeforeTax;
         private double _deducedAmount = 0;
 
-        public double PriceBeforeDiscount { get => _priceBeforeTax; }
+        public double PriceBeforeTax { get => _priceBeforeTax; }
 
         public MultiplicativeDiscountCalculator(List<IDiscount> Discount)
         {
-            _upc = getUpcDiscount(Discount);
-            _universal = getUniversalDiscount(Discount);
+            _allDiscounts = Discount;
+            _upc = GetUpcDiscount(Discount);
+            _universal = GetUniversalDiscount(Discount);
         }
 
-        public UpcDiscount getUpcDiscount(List<IDiscount> Discount)
+        public UpcDiscount GetUpcDiscount(List<IDiscount> Discount)
         {
             return Discount.OfType<UpcDiscount>().First();
         }
 
-        public UniversalDiscount getUniversalDiscount(List<IDiscount> Discount)
+        public UniversalDiscount GetUniversalDiscount(List<IDiscount> Discount)
         {
             return Discount.OfType<UniversalDiscount>().First();
         }
@@ -47,9 +49,7 @@ namespace PriceCalculatorKata
             else
             {
                 return CalculateUpcAndUniversalAfterTax(price);
-
             }
-
         }
 
         public double CalculateUpcAndUniversalBeforeTax(double price)
@@ -58,19 +58,22 @@ namespace PriceCalculatorKata
             _deducedAmount += _universal.CalculateDiscount(price - _deducedAmount);
             _priceBeforeTax = price - _deducedAmount;
             return _deducedAmount;
-
         }
+
         public double CalculateUpcAfterAndUniversalBeforeTax(double price)
         {
             _deducedAmount = _universal.CalculateDiscount(price);
             _priceBeforeTax = price - _deducedAmount;
-            return _deducedAmount += _upc.CalculateDiscount(_priceBeforeTax);
+            _deducedAmount += _upc.CalculateDiscount(_priceBeforeTax);
+            return _deducedAmount;
         }
+
         public double CalculateUpcBeforeAndUniversalAfterTax(double price)
         {
             _deducedAmount = _upc.CalculateDiscount(price);
             _priceBeforeTax = price - _deducedAmount;
-            return _deducedAmount += _universal.CalculateDiscount(_priceBeforeTax);
+            _deducedAmount += _universal.CalculateDiscount(_priceBeforeTax);
+            return _deducedAmount;
         }
 
         public double CalculateUpcAndUniversalAfterTax(double price)
