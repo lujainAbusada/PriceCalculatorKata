@@ -4,9 +4,9 @@ using System.Text;
 
 namespace PriceCalculatorKata
 {
-    class Currency
+    internal class Currency
     {
-        private string _name;
+        private readonly string _name;
 
         public string Name { get => _name; }
 

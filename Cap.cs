@@ -4,11 +4,11 @@ using System.Text;
 
 namespace PriceCalculatorKata
 {
-    class Cap
+    internal class Cap
     {
         private double _capValue;
         private string _capString;
-        private string _percentage = "%";
+        private readonly string _percentage = "%";
 
         public Cap(string capString)
         {

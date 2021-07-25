@@ -4,22 +4,23 @@ using System.Text;
 
 namespace PriceCalculatorKata
 {
-    class UniversalDiscount : IDiscount
+
+    internal class UniversalDiscount : IDiscount
     {
-        private double _amount;
+        private readonly double _amount;
         private double _priceAfterDiscount;
         private double _deducedPriceAmount;
-        private bool _beforeTax;
+        private readonly DiscountType _type;
 
         public double Amount { get => _amount; }
         public double PriceAfterDiscount { get => _priceAfterDiscount; }
         public double DeducedPriceAmount { get => _deducedPriceAmount; }
-        public bool BeforeTax { get => _beforeTax; }
+        public DiscountType Type { get => _type; }
 
-        public UniversalDiscount(double amount, bool beforeTax)
+        public UniversalDiscount(double amount, DiscountType type)
         {
             _amount = amount;
-            _beforeTax = beforeTax;
+            _type = type;
         }
 
         public double CalculateDiscount(double price)

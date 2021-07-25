@@ -1,11 +1,29 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace PriceCalculatorKata
 {
-    class Program
+    internal class Program
     {
         static void Main(string[] args)
         {
+            Product Book = new Product("The Little Prince Book", 12345, 20.25, 0);
+            Tax tax = new Tax(0.2);
+            UniversalDiscount universal = new UniversalDiscount(0.15, DiscountType.after);
+            UpcDiscount upc = new UpcDiscount(0.07, DiscountType.after);
+            Expenses expenses = new Expenses("2.2", "1%", "0");
+            Cap cap = new Cap("30%");
+            Currency currency = new Currency("USD");
+            List<IDiscount> Discount = new List<IDiscount>
+            {
+                upc,
+                universal
+            };
+            IDiscountCalculator discountCalculator = new MultiplicativeDiscountCalculator(Discount);
+            PriceCalculator priceCalculator = new PriceCalculator(Book, tax, discountCalculator, expenses, currency, cap);
+            priceCalculator.CalculateFinalPrice();
+            new PurchaseReport(priceCalculator).PrintReport();
+            /*
             Product Book = new Product("The Little Prince Book", 12345, 20.25, 0);
             Console.WriteLine("Please Enter Tax amount:");
             Tax tax = new Tax(Double.Parse(Console.ReadLine()));
@@ -41,6 +59,7 @@ namespace PriceCalculatorKata
             PriceCalculator priceCalculator = new PriceCalculator(Book, tax, discountCalculator, expenses, currency, cap);
             priceCalculator.CalculateFinalPrice();
             new PurchaseReport(priceCalculator).PrintReport();
+             */
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace PriceCalculatorKata
 {
-    class Product
+    internal class Product
     {
         private readonly string _name;
         private readonly int _upc;

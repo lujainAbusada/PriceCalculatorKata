@@ -4,14 +4,14 @@ using System.Text;
 
 namespace PriceCalculatorKata
 {
-    class PriceCalculator
+    internal class PriceCalculator
     {
-        private Product _purchasedProduct;
-        private Expenses _expenses;
-        private Cap _cap;
-        private Tax _tax;
-        private Currency _currency;
-        private IDiscountCalculator _discount;
+        private readonly Product _purchasedProduct;
+        private readonly Expenses _expenses;
+        private readonly Cap _cap;
+        private readonly Tax _tax;
+        private readonly Currency _currency;
+        private readonly IDiscountCalculator _discount;
         private double finalPrice;
         private double _deducedPriceAmount = 0;
         private double _priceBeforeTax;
@@ -33,6 +33,7 @@ namespace PriceCalculatorKata
             _priceBeforeTax = _purchasedProduct.Price;
             _discount = discountCalculator;
         }
+
         public double CalculateFinalPrice()
         {
             _deducedPriceAmount = _discount.CalculateTotalDiscount(_purchasedProduct.Price);

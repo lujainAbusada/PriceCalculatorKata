@@ -4,7 +4,7 @@ using System.Text;
 
 namespace PriceCalculatorKata
 {
-    interface IDiscountCalculator
+    internal interface IDiscountCalculator
     {
         public double PriceBeforeDiscount { get; }
         public double CalculateTotalDiscount(double price);

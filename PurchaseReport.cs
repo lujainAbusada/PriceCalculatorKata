@@ -4,9 +4,9 @@ using System.Text;
 
 namespace PriceCalculatorKata
 {
-    class PurchaseReport
+    internal class PurchaseReport
     {
-        private PriceCalculator _priceCalculator;
+        private readonly PriceCalculator _priceCalculator;
 
         public PurchaseReport(PriceCalculator priceCalculator)
         {

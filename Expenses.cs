@@ -2,11 +2,11 @@
 
 namespace PriceCalculatorKata
 {
-    class Expenses
+    internal class Expenses
     {
-        private string _transportCostString;
-        private string _packagingCostString;
-        private string _administrativeCostString;
+        private readonly string _transportCostString;
+        private readonly string _packagingCostString;
+        private readonly string _administrativeCostString;
         private readonly string _percentage = "%";
 
         public Expenses(string transportCostString, string packagingCostString, string administrativeCostString)
