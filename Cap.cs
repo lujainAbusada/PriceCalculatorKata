@@ -6,7 +6,7 @@ namespace PriceCalculatorKata
 {
     internal class Cap
     {
-        private string _capValue;
+        private readonly string _capValue;
         private const string _percentage = "%";
 
         public Cap(string capValue)
