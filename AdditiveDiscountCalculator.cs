@@ -9,10 +9,6 @@ namespace PriceCalculatorKata
         private readonly List<IDiscount> _allDiscounts;
         private readonly UpcDiscount _upc;
         private readonly UniversalDiscount _universal;
-        private double _priceBeforeTax;
-        private double _deducedAmount;
-
-        public double PriceBeforeTax { get => _priceBeforeTax; }
 
         public AdditiveDiscountCalculator(List<IDiscount> Discount)
         {
@@ -50,35 +46,49 @@ namespace PriceCalculatorKata
                 return CalculateUpcAndUniversalAfterTax(price);
             }
         }
-
+     
+        public double CalculatePriceBeforeTax(double price)
+        {
+            if (_upc.Type == DiscountType.before && _universal.Type == DiscountType.before)
+            {
+                return price -_upc.CalculateDiscount(price) + _universal.CalculateDiscount(price);
+            }
+            else if (_upc.Type == DiscountType.before && _universal.Type == DiscountType.after)
+            {
+                return price - _upc.CalculateDiscount(price);
+            }
+            else if (_upc.Type == DiscountType.after && _universal.Type == DiscountType.before)
+            {
+                return price -  _universal.CalculateDiscount(price);
+            }
+            else
+            {
+                return price;
+            }
+        }
+       
         public double CalculateUpcAndUniversalBeforeTax(double price)
         {
-            _deducedAmount = _upc.CalculateDiscount(price) + _universal.CalculateDiscount(price);
-            _priceBeforeTax = price - _deducedAmount;
-            return _deducedAmount;
+            return _upc.CalculateDiscount(price) + _universal.CalculateDiscount(price);
         }
 
         public double CalculateUpcAfterAndUniversalBeforeTax(double price)
         {
-            _deducedAmount = _universal.CalculateDiscount(price);
-            _priceBeforeTax = price - _deducedAmount;
-            _deducedAmount += _upc.CalculateDiscount(_priceBeforeTax);
-            return _deducedAmount;
+            var deducedAmount = _universal.CalculateDiscount(price);
+            deducedAmount += _upc.CalculateDiscount(price - deducedAmount);
+            return deducedAmount;
         }
 
         public double CalculateUpcBeforeAndUniversalAfterTax(double price)
         {
-            _deducedAmount = _upc.CalculateDiscount(price);
-            _priceBeforeTax = price - _deducedAmount;
-            _deducedAmount += _universal.CalculateDiscount(_priceBeforeTax);
-            return _deducedAmount;
+            var deducedAmount = _upc.CalculateDiscount(price);
+            deducedAmount += _universal.CalculateDiscount(price - deducedAmount);
+            return deducedAmount;
         }
 
         public double CalculateUpcAndUniversalAfterTax(double price)
         {
-            _deducedAmount = _upc.CalculateDiscount(price) + _universal.CalculateDiscount(price);
-            _priceBeforeTax = price;
-            return _deducedAmount;
+                return  _upc.CalculateDiscount(price) + _universal.CalculateDiscount(price);
         }
     }
 }

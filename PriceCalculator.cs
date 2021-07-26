@@ -39,7 +39,7 @@ namespace PriceCalculatorKata
         {
             _deducedPriceAmount = _discount.CalculateTotalDiscount(_purchasedProduct.Price);
             CheckCap();
-            _priceBeforeTax = _discount.PriceBeforeTax;
+            _priceBeforeTax = _discount.CalculatePriceBeforeTax(_purchasedProduct.Price);
             finalPrice += _tax.CalculateTax(_priceBeforeTax) - _deducedPriceAmount + Expenses.CalculateTotalExpenses(_purchasedProduct.Price);
             return Math.Round(finalPrice, 2);
         }
