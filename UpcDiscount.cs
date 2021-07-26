@@ -10,7 +10,7 @@ namespace PriceCalculatorKata
         private readonly DiscountType _type;
 
         public double Amount { get => _amount; }
-        internal DiscountType Type { get => _type; }
+        public DiscountType Type { get => _type; }
 
         public UpcDiscount(double amount, DiscountType type)
         {

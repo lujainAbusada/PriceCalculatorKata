@@ -12,7 +12,7 @@ namespace PriceCalculatorKata
             UniversalDiscount universal = new UniversalDiscount(0.15, DiscountType.after);
             UpcDiscount upc = new UpcDiscount(0.07, DiscountType.after);
             Expenses expenses = new Expenses("0", "3%", "0");
-            Cap cap = new Cap("4");
+            Cap cap = new Cap("40%");
             Currency currency = new Currency("USD");
             List<IDiscount> Discount = new List<IDiscount>
             {

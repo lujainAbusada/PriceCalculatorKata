@@ -8,14 +8,11 @@ namespace PriceCalculatorKata
     internal class MultiplicativeDiscountCalculator : IDiscountCalculator
     {
         private readonly List<IDiscount> _allDiscounts;
-        private readonly UpcDiscount _upc;
-        private readonly UniversalDiscount _universal;
+
 
         public MultiplicativeDiscountCalculator(List<IDiscount> Discount)
         {
             _allDiscounts = Discount;
-            _upc = GetUpcDiscount(Discount);
-            _universal = GetUniversalDiscount(Discount);
         }
 
         public UpcDiscount GetUpcDiscount(List<IDiscount> Discount)
@@ -30,47 +27,38 @@ namespace PriceCalculatorKata
 
         public double CalculateTotalDiscount(double price)
         {
-            if (_upc.Type == DiscountType.after && _universal.Type == DiscountType.before)
-            {
-                return CalculateUpcAfterAndUniversalBeforeTax(price);
-            }
-            else
-            {
-                return CalculateUpcAndUniversalAfterTax(price);
-            }
+            var discountBeforeTax = CalculateDiscountsbeforeTax(price, (from s in _allDiscounts
+                                                                        where s.Type.Equals(DiscountType.before)
+                                                                        select s).ToList());
+            var discountAfterTax = CalculateDiscountsbeforeTax(price - discountBeforeTax, (from s in _allDiscounts
+                                                                                           where s.Type.Equals(DiscountType.after)
+                                                                                           select s).ToList());
+            return discountAfterTax + discountBeforeTax;
+
+        }
+
+        public double CalculateDiscountsAfterTax(double price, List<IDiscount> discountsAfterTax)
+        {
+            var deducedAmountAfterTax = 0.0;
+            foreach (IDiscount Discount in discountsAfterTax)
+                deducedAmountAfterTax += Discount.CalculateDiscount(price - deducedAmountAfterTax);
+            return deducedAmountAfterTax;
+        }
+
+        public double CalculateDiscountsbeforeTax(double price, List<IDiscount> discountsBeforeTax)
+        {
+            var deducedAmountBeforeTax = 0.0;
+            foreach (IDiscount Discount in discountsBeforeTax)
+                deducedAmountBeforeTax += Discount.CalculateDiscount(price - deducedAmountBeforeTax);
+            return deducedAmountBeforeTax;
         }
 
         public double CalculatePriceBeforeTax(double price)
         {
-            if (_upc.Type == DiscountType.before && _universal.Type == DiscountType.before)
-            {
-                var deducedAmount = _upc.CalculateDiscount(price);
-                return price - deducedAmount - _universal.CalculateDiscount(price - deducedAmount);
-            }
-            else if (_upc.Type == DiscountType.before && _universal.Type == DiscountType.after)
-            {
-                return price - _upc.CalculateDiscount(price);
-            }
-            else if (_upc.Type == DiscountType.after && _universal.Type == DiscountType.before)
-            {
-                return price - _universal.CalculateDiscount(price);
-            }
-            else
-            {
-                return price;
-            }
-        }
-
-        public double CalculateUpcAfterAndUniversalBeforeTax(double price)
-        {
-            var deducedAmount = _universal.CalculateDiscount(price);
-            return deducedAmount + _upc.CalculateDiscount(price - deducedAmount);
-        }
-
-        public double CalculateUpcAndUniversalAfterTax(double price)
-        {
-             var deducedAmount = _upc.CalculateDiscount(price);
-             return deducedAmount + _universal.CalculateDiscount(price - deducedAmount); ;
+            return price - CalculateDiscountsbeforeTax(price, (from s in _allDiscounts
+                                                               where s.Type.Equals(DiscountType.before)
+                                                               select s).ToList());
         }
     }
 }
+       
