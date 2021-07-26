@@ -7,5 +7,6 @@ namespace PriceCalculatorKata
     internal interface IDiscount
     {
         public double CalculateDiscount(double price);
+        public DiscountType Type { get; }
     }
 }
