@@ -6,7 +6,7 @@ namespace PriceCalculatorKata
 {
     internal interface IDiscountCalculator
     {
-        public double PriceBeforeDiscount { get; }
+        public double PriceBeforeTax { get; }
         public double CalculateTotalDiscount(double price);
         public double CalculateUpcAndUniversalBeforeTax(double price);
         public double CalculateUpcAfterAndUniversalBeforeTax(double price);

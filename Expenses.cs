@@ -7,33 +7,33 @@ namespace PriceCalculatorKata
         private readonly string _transportCostString;
         private readonly string _packagingCostString;
         private readonly string _administrativeCostString;
-        private readonly string _percentage = "%";
+        private double _transportCost;
+        private double _packagingCost;
+        private double _administrativeCost;
+        private const string _percentage = "%";
+
+        public double TransportCost { get => _transportCost;  }
+        public double PackagingCost { get => _packagingCost; }
+        public double AdministrativeCost { get => _administrativeCost; }
 
         public Expenses(string transportCostString, string packagingCostString, string administrativeCostString)
         {
-            this._transportCostString = transportCostString;
-            this._packagingCostString = packagingCostString;
-            this._administrativeCostString = administrativeCostString;
+            _transportCostString = transportCostString;
+            _packagingCostString = packagingCostString;
+            _administrativeCostString = administrativeCostString;
         }
 
         public double CalculateExpenseValue(double purchasedProductPrice, string expenseString)
         {
-            if (expenseString.Contains(_percentage))
-            {
-                expenseString = expenseString.Replace(_percentage, "");
-                return purchasedProductPrice * Double.Parse(expenseString) / 100;
-            }
-            else
-            {
-                return Double.Parse(expenseString);
-            }
+            return expenseString.Contains(_percentage) ? purchasedProductPrice * Double.Parse(expenseString.Replace(_percentage, "")) / 100 : Double.Parse(expenseString);
         }
 
         public double CalculateTotalExpenses(double purchasedProductPrice)
         {
-            return Math.Round(CalculateExpenseValue(purchasedProductPrice, _transportCostString) +
-                CalculateExpenseValue(purchasedProductPrice, _packagingCostString) +
-                CalculateExpenseValue(purchasedProductPrice, _administrativeCostString), 4);
+            _transportCost = CalculateExpenseValue(purchasedProductPrice, _transportCostString);
+            _packagingCost = CalculateExpenseValue(purchasedProductPrice, _packagingCostString);
+            _administrativeCost = CalculateExpenseValue(purchasedProductPrice, _administrativeCostString);
+            return Math.Round(_packagingCost+_transportCost+_administrativeCost, 4);
         }
     }
 }

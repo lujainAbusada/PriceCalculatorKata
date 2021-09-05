@@ -21,6 +21,7 @@ namespace PriceCalculatorKata
         internal Tax Tax { get => _tax; }
         internal Currency Currency { get => _currency; }
         public double DeducedPriceAmount { get => _deducedPriceAmount; }
+        internal Expenses Expenses => _expenses;
 
         public PriceCalculator(Product product, Tax tax, IDiscountCalculator discountCalculator, Expenses expenses, Currency currency, Cap cap)
         {
@@ -38,8 +39,8 @@ namespace PriceCalculatorKata
         {
             _deducedPriceAmount = _discount.CalculateTotalDiscount(_purchasedProduct.Price);
             CheckCap();
-            _priceBeforeTax = _discount.PriceBeforeDiscount;
-            finalPrice += _tax.CalculateTax(_priceBeforeTax) - _deducedPriceAmount + _expenses.CalculateTotalExpenses(_purchasedProduct.Price);
+            _priceBeforeTax = _discount.PriceBeforeTax;
+            finalPrice += _tax.CalculateTax(_priceBeforeTax) - _deducedPriceAmount + Expenses.CalculateTotalExpenses(_purchasedProduct.Price);
             return Math.Round(finalPrice, 2);
         }
 

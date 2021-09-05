@@ -8,11 +8,11 @@ namespace PriceCalculatorKata
         static void Main(string[] args)
         {
             Product Book = new Product("The Little Prince Book", 12345, 20.25, 0);
-            Tax tax = new Tax(0.2);
+            Tax tax = new Tax(0.21);
             UniversalDiscount universal = new UniversalDiscount(0.15, DiscountType.after);
             UpcDiscount upc = new UpcDiscount(0.07, DiscountType.after);
-            Expenses expenses = new Expenses("2.2", "1%", "0");
-            Cap cap = new Cap("30%");
+            Expenses expenses = new Expenses("0", "3%", "0");
+            Cap cap = new Cap("4");
             Currency currency = new Currency("USD");
             List<IDiscount> Discount = new List<IDiscount>
             {
